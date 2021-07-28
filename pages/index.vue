@@ -80,7 +80,7 @@
 
 body {
   p {
-    color: pink
+    color: intial
   }
 }
 
