@@ -117,6 +117,9 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js'
     }
+  },
+  mounted () {
+    this.$store.commit('updateCartFromLocalStorage')
   }
 }
 </script>
