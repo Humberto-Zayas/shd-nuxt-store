@@ -22,6 +22,9 @@ export const getters = {
     } else {
       return null
     }
+  },
+  cartItems: (state) => {
+    return state.cart
   }
 }
 
@@ -46,8 +49,13 @@ export const mutations = {
       } else {
         state.cart = state.cart.filter(i => i.id !== product.id)
       }
-
-      updateLocalStorage(state.cart)
+    }
+    updateLocalStorage(state.cart)
+  },
+  updateCartFromLocalStorage (state) {
+    const cart = localStorage.getItem('cart')
+    if (cart) {
+      state.cart = JSON.parse(cart)
     }
   }
 }
