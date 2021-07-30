@@ -1,80 +1,124 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
+  <div>
+    <v-row justify="center" align="center">
+      <v-col
+        v-for="product in kits"
+        :key="product.id"
+        cols="12"
+        sm="4"
+      >
+        <product-summary-card
+          :product="product"
+          @view-product="viewProduct(product)"
+        />
+      </v-col>
+    </v-row>
+    <!-- <product-drawer v-show="sheet" :product="product" /></product-drawer> -->
+    <div class="text-center">
+      <v-bottom-sheet v-model="sheet">
+        <v-sheet
+          class="text-center"
+        >
           <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
+            class="mt-6"
+            text
+            color="red"
+            @click="sheet = !sheet"
           >
-            Continue
+            close
           </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+          <div v-if="product" class="py-3">
+            <v-row>
+              <v-col>
+                <v-card
+                  class="mx-auto"
+                  max-width="344"
+                  outlined
+                >
+                  <v-list-item three-line>
+                    <v-list-item-content>
+                      <v-list-item-title class="text-h5 mb-1">
+                        {{ product.name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>{{ product.description }}</v-list-item-subtitle>
+                    </v-list-item-content>
+
+                    <v-list-item-avatar
+                      tile
+                      size="80"
+                      color="grey"
+                    />
+                  </v-list-item>
+
+                  <v-card-actions>
+                    <v-btn
+                      outlined
+                      rounded
+                      text
+                      @click="addToCart()"
+                    >
+                      Add
+                    </v-btn>
+                    <v-btn
+                      outlined
+                      rounded
+                      text
+                      @click="removeFromCart()"
+                    >
+                      Remove
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+              <v-col>
+                <h3>Total</h3>
+                <div v-if="productTotal">
+                  <h4>{{ productTotal }} </h4>
+                </div>
+              </v-col>
+            </v-row>
+          </div>
+        </v-sheet>
+      </v-bottom-sheet>
+    </div>
+  </div>
 </template>
+
+<script>
+import ProductSummaryCard from '~/components/ProductSummaryCard.vue'
+// import ProductDrawer from '~/components/ProductDrawer.vue'
+
+import items from '~/mixins/items.js'
+export default {
+  components: { ProductSummaryCard },
+  mixins: [items],
+  data () {
+    return {
+      product: null,
+      sheet: false
+    }
+  },
+  computed: {
+    productTotal () {
+      // return this.$store.getters.productQuantity(this.product)
+      return this.$store.getters.productQuantity(this.product.id)
+    }
+  },
+  methods: {
+    viewProduct (product) {
+      this.product = product
+      this.sheet = !this.sheet
+    },
+    addToCart () {
+      this.$store.commit('addToCart', this.product)
+    },
+    removeFromCart () {
+      this.$store.commit('removeFromCart', this.product)
+    }
+  }
+}
+
+</script>
 
 <style lang="scss">
 
