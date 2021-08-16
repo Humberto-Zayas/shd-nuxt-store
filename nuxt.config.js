@@ -43,8 +43,14 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-stripe-module'
   ],
+  publicRuntimeConfig: {
+    stripe: {
+      publishableKey: 'pk_test_51JJS7FE0272vM1tUrJ6CJcD9fv4a95NqgMwngKLPh1us9PH0Log3lAP9sEpJzT0N8OGwGJpDg5UL9CRRbGrFSt0M005SsbWJ41'
+    }
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

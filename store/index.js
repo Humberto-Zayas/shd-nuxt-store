@@ -25,6 +25,9 @@ export const getters = {
   },
   cartItems: (state) => {
     return state.cart
+  },
+  cartTotal: (state) => {
+    return state.cart.reduce((a, b) => a + (b.price * b.quantity), 0)
   }
 }
 
