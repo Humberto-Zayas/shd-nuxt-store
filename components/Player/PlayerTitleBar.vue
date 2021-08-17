@@ -2,19 +2,19 @@
   <v-system-bar window>
     <v-menu offset-y transition="slide-y-transition">
       <v-btn slot="activator" flat small right>
-        <v-icon>headset</v-icon> MENU
+        <v-icon>mdi-headset</v-icon> MENU
       </v-btn>
       <v-list>
-        <v-list-tile @click="dialog = true">
-          <v-list-tile-title>About</v-list-tile-title>
-        </v-list-tile>
+        <v-list-item @click="dialog = true">
+          <v-list-item-title>About</v-list-item-title>
+        </v-list-item>
         <v-dialog v-model="dialog" max-width="300">
           <v-card>
             <v-card-title><h2>Vue Music Player</h2></v-card-title>
             <v-card-text>Version 1.0.0</v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn flat @click="dialog = false">
+              <v-btn text @click="dialog = false">
                 OK
               </v-btn>
             </v-card-actions>

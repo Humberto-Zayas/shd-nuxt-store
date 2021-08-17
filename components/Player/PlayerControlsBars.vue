@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar flat height="90">
-      <v-btn flat icon @click="toggleMute">
+      <v-btn text icon @click="toggleMute">
         <template v-if="!muted">
           <v-icon v-if="volume >= 0.5">
             mdi-volume-plus
@@ -20,25 +20,25 @@
       <v-slider v-model="volume" max="1" step="0.1" @input="updateVolume(volume)" />
       {{ volume * 100 + '%' }}
       <v-spacer />
-      <v-btn outline fab small color="light-blue" @click="skipTrack('prev')">
+      <v-btn outlined fab small color="light-blue" @click="skipTrack('prev')">
         <v-icon>mdi-skip-previous</v-icon>
       </v-btn>
-      <v-btn outline fab small color="light-blue" @click="stopTrack">
+      <v-btn outlined fab small color="light-blue" @click="stopTrack">
         <v-icon>mdi-stop</v-icon>
       </v-btn>
-      <v-btn outline fab color="light-blue" @click="playTrack()">
+      <v-btn outlined fab color="light-blue" @click="playTrack()">
         <v-icon large>
           mdi-play
         </v-icon>
       </v-btn>
-      <v-btn outline fab small color="light-blue" @click="pauseTrack">
+      <v-btn outlined fab small color="light-blue" @click="pauseTrack">
         <v-icon>mdi-pause</v-icon>
       </v-btn>
-      <v-btn outline fab small color="light-blue" @click="skipTrack('next')">
+      <v-btn outlined fab small color="light-blue" @click="skipTrack('next')">
         <v-icon>mdi-skip-next</v-icon>
       </v-btn>
       <v-spacer />
-      <v-btn flat icon @click="toggleLoop">
+      <v-btn text icon @click="toggleLoop">
         <v-icon v-if="loop" color="light-blue">
           mdi-repeat
         </v-icon>
@@ -46,7 +46,7 @@
           mdi-repeat
         </v-icon>
       </v-btn>
-      <v-btn flat icon @click="toggleShuffle">
+      <v-btn text icon @click="toggleShuffle">
         <v-icon v-if="shuffle" color="light-blue">
           mdi-shuffle
         </v-icon>
@@ -56,7 +56,7 @@
       </v-btn>
     </v-toolbar>
     <v-toolbar flat height="40">
-      <v-progress-linear v-model="trackProgress" height="40" @click="updateSeek($event)" />
+      <v-progress-linear ref="progressBar" v-model="trackProgress" height="40" @click="updateSeek($event)" />
     </v-toolbar>
   </div>
 </template>
@@ -69,7 +69,10 @@ export default {
   props: {
     loop: Boolean,
     shuffle: Boolean,
-    progress: Number
+    progress: {
+      type: Number,
+      default: 0
+    }
   },
   data () {
     return {
@@ -78,8 +81,25 @@ export default {
     }
   },
   computed: {
-    trackProgress () {
-      return this.progress * 100
+    console: () => console,
+    window: () => window,
+    trackProgress: {
+      get () {
+        return this.progress * 100
+      },
+      set (val) {
+        this.currentPro = val
+      }
+
+    },
+    currentPro: {
+      get () {
+        return this.progress
+      },
+      set () {
+
+      }
+
     }
   },
   created () {
@@ -112,7 +132,9 @@ export default {
       this.$emit('toggleshuffle', !this.shuffle)
     },
     updateSeek (event) {
-      const el = document.querySelector('.progress-linear__bar')
+      const el = this.$refs.progressBar
+      console.log(el)
+      // const el = document.querySelector('.progress-linear__bar')
       const mousePos = event.offsetX
       const elWidth = el.clientWidth
       const percents = (mousePos / elWidth) * 100

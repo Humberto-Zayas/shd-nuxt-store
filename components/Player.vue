@@ -1,8 +1,8 @@
 <template>
   <v-app dark>
-    <v-content>
+    <v-main>
       <v-container>
-        <player-title-bar />
+        <!-- <player-title-bar /> -->
         <player-info-panel
           :track-info="getTrackInfo"
         />
@@ -28,7 +28,7 @@
           :playlist="playlist"
         />
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -36,7 +36,7 @@
 
 import { Howl } from 'howler'
 
-import PlayerTitleBar from '~/components/Player/PlayerTitleBar.vue'
+// import PlayerTitleBar from '~/components/Player/PlayerTitleBar.vue'
 import PlayerPlaylistPanel from '~/components/Player/PlayerPlaylistPanel.vue'
 import PlayerControlsBars from '~/components/Player/PlayerControlsBars.vue'
 import PlayerInfoPanel from '~/components/Player/PlayerInfoPanel.vue'
@@ -44,7 +44,7 @@ import PlayerSearchBar from '~/components/Player/PlayerSearchBar.vue'
 
 export default {
   components: {
-    PlayerTitleBar,
+    // PlayerTitleBar,
     PlayerPlaylistPanel,
     PlayerControlsBars,
     PlayerInfoPanel,
@@ -125,9 +125,9 @@ export default {
       const selectedTrackIndex = this.playlist.findIndex(track => track === this.selectedTrack)
 
       if (typeof index === 'number') {
-        index = index
+        // let index
       } else if (this.selectedTrack) {
-        if (this.selectedTrack != this.currentTrack) {
+        if (this.selectedTrack !== this.currentTrack) {
           this.stop()
         }
         index = selectedTrackIndex
